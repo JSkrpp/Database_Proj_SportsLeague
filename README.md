@@ -1,7 +1,12 @@
 # Database Project - Small Sports League Management App
 
-This app is a project for databases class at Wrocław University Of Science and Technology
-It allows the user to realize basic CRUD operations on a MS SQL Database
+This app is a project for databases class at Wrocław University Of Science and Technology.
+It allows the user to realize basic CRUD operations on a MS SQL Database.
 
 ## Overwiev
 
+-The app is written solely in C# langueage
+-For now it uses a local server so it cannot be used reliably on different machines
+-User interface has been made using WindowsForms
+-As of 05.01.2025 it uses queries made as strings, so it is susceptible to SQL injection, but as databese safety was not a requirement for the project i didn`t focus on it
+ 
