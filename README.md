@@ -3,7 +3,7 @@
 This app is a project for databases class at Wrocław University Of Science and Technology.  
 It allows the user to realize basic CRUD operations on a MS SQL Database.  
 
-#Overwiev  
+## Overwiev  
   -The app is written solely in C# langueage  
   -For now it uses a local server so it cannot be used reliably on different machines  
   -User interface has been made using WindowsForms  
