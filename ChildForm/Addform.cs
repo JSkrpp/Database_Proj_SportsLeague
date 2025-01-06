@@ -61,8 +61,17 @@ namespace Liga.ChildForm
 
                 switch (current)
                 {
-                    case "Druzyny":
+                    case "Zawodnicy":
+                        names.Add("PlayerID");
+                        names.Add("LastName");
+                        names.Add("FirstName");
+                        names.Add("DateOfBirth");
                         names.Add("TeamID");
+                        names.Add("CountryCode");
+                        names.Add("SponsorID");
+                        break;
+
+                    case "Druzyny":
                         names.Add("TeamName");
                         names.Add("TeamCity");
                         names.Add("BilansMLN");
@@ -82,6 +91,21 @@ namespace Liga.ChildForm
                         names.Add("TeamID");
                         names.Add("SponsorID");
                         break;
+
+                    case "Kontrakty":
+                        names.Add("Id");
+                        names.Add("PlayerID");
+                        names.Add("ExpiryDate");
+                        names.Add("SalaryMLN");
+                        break;
+
+                    case "Pracownicy":
+                        names.Add("ID");
+                        names.Add("PlayerID");
+                        names.Add("ExpiryDate");
+                        names.Add("Salary(MLN)");
+                        break;
+                    
 
                     default: break;
                 }
@@ -103,6 +127,14 @@ namespace Liga.ChildForm
                         dataEditor.AddStadium(textBox1.Text, textBox2.Text, textBox3.Text, textBox4.Text);
                         break;
 
+                    case "Druzyny":
+                        dataEditor.addTeam(textBox1.Text, textBox2.Text, textBox3.Text, textBox5.Text, textBox4.Text);
+                        break;
+
+                    case "Kontrakty":
+                        dataEditor.AddContract(textBox1.Text, textBox2.Text, textBox3.Text, textBox4.Text);
+                        break;
+
                     default: break;
                 }
                 clearTextBoxes();
@@ -112,7 +144,7 @@ namespace Liga.ChildForm
                 MessageBox.Show($"Nie polaczono z baza danych.\n Blad: {ex.Message}");
             }
 
-            }
+           }
        
     }
 }

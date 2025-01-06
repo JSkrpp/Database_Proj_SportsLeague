@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 using System.Threading;
 using System.Security.Policy;
+using Ligga;
 
 namespace Liga
 {
@@ -18,6 +19,7 @@ namespace Liga
         private List<Sponsor> sponsors;
         private List<Employee> employees;
         private List<Contract> contracts;
+        private List<TeamPlayer> teamPlayers;
         private string con_str;
         public DataAccess()
         {
@@ -27,6 +29,7 @@ namespace Liga
             sponsors = new List<Sponsor>();
             employees = new List<Employee>();
             contracts = new List<Contract>();
+            teamPlayers = new List<TeamPlayer>();
             con_str = "Server=LAPTOP-OLN485JV\\LIGA; Database=liga_sportowa; Trusted_Connection=True";
         }
 
@@ -190,6 +193,66 @@ namespace Liga
             }
         }
 
+        public void SelectContracts()
+        {
+            if (contracts != null)
+            {
+                contracts.Clear();
+            }
+            using (SqlConnection con = new SqlConnection(con_str))
+            {
+                con.Open();
+                string sql = "SELECT * FROM Kontrakty";
+                using (SqlCommand command = new SqlCommand(sql, con))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Contract contract = new Contract();
+                            contract.Id = reader.GetInt32(0);
+                            contract.PlayerID = reader.GetInt32(1);
+                            contract.ExpiryDate = reader.GetDateTime(2).ToString("MM/dd/yyyy");
+                            contract.SalaryMLN = reader.GetFloat(3);
+                            contracts.Add(contract);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void SelectView(string TeamName, bool rising)
+        {
+            if (teamPlayers != null)
+            {
+                teamPlayers.Clear();
+            }
+            using (SqlConnection con = new SqlConnection(con_str))
+            {
+                con.Open();
+                string orderBy = rising ? "ASC": "DESC";
+                string sql = "SELECT * FROM Druzyna_Zawodnik WHERE TeamName = @TeamName " +
+                    $"ORDER BY LastName {orderBy};";
+                using (SqlCommand command = new SqlCommand(sql, con))
+                {
+                    command.Parameters.AddWithValue("@TeamName", TeamName);
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            TeamPlayer teamPlayer = new TeamPlayer();
+                            teamPlayer.LastName = reader.GetString(0);
+                            teamPlayer.FirstName = reader.GetString(1);
+                            teamPlayer.Country = reader.GetString(2);
+                            teamPlayer.TeamCity = reader.GetString(3);
+                            teamPlayer.TeamName = reader.GetString(4);
+                            teamPlayers.Add(teamPlayer);
+                        }
+                    }
+                }
+            }
+        }
+
         public List<Player> GetPlayers
         { 
             get { return players; }
@@ -216,5 +279,7 @@ namespace Liga
         }
 
         public List<Contract> GetContracts { get { return contracts; } }
+
+        public List<TeamPlayer> GetView { get { return teamPlayers; } }
     }
 }

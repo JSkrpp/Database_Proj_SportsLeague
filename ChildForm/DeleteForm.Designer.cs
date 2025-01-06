@@ -39,7 +39,7 @@
             // 
             this.tableName.AutoSize = true;
             this.tableName.Font = new System.Drawing.Font("Nirmala UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tableName.Location = new System.Drawing.Point(492, 176);
+            this.tableName.Location = new System.Drawing.Point(385, 182);
             this.tableName.Name = "tableName";
             this.tableName.Size = new System.Drawing.Size(0, 25);
             this.tableName.TabIndex = 9;
@@ -49,9 +49,9 @@
             this.dataList.Font = new System.Drawing.Font("Nirmala UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dataList.FormattingEnabled = true;
             this.dataList.ItemHeight = 20;
-            this.dataList.Location = new System.Drawing.Point(492, 215);
+            this.dataList.Location = new System.Drawing.Point(390, 215);
             this.dataList.Name = "dataList";
-            this.dataList.Size = new System.Drawing.Size(310, 304);
+            this.dataList.Size = new System.Drawing.Size(500, 304);
             this.dataList.TabIndex = 8;
             // 
             // tableCB
@@ -66,17 +66,17 @@
             "Sponsorzy",
             "Stadiony",
             "Zawodnicy"});
-            this.tableCB.Location = new System.Drawing.Point(492, 76);
+            this.tableCB.Location = new System.Drawing.Point(390, 76);
             this.tableCB.Name = "tableCB";
-            this.tableCB.Size = new System.Drawing.Size(310, 23);
+            this.tableCB.Size = new System.Drawing.Size(500, 23);
             this.tableCB.TabIndex = 7;
             // 
             // button2
             // 
-            this.button2.Font = new System.Drawing.Font("Nirmala UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(492, 553);
+            this.button2.Font = new System.Drawing.Font("Nirmala UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Location = new System.Drawing.Point(390, 555);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(310, 25);
+            this.button2.Size = new System.Drawing.Size(500, 40);
             this.button2.TabIndex = 6;
             this.button2.Text = "Usun komórkę";
             this.button2.UseVisualStyleBackColor = true;
@@ -84,10 +84,10 @@
             // 
             // button1
             // 
-            this.button1.Font = new System.Drawing.Font("Nirmala UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(492, 135);
+            this.button1.Font = new System.Drawing.Font("Nirmala UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(390, 135);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(310, 25);
+            this.button1.Size = new System.Drawing.Size(500, 40);
             this.button1.TabIndex = 5;
             this.button1.Text = "Zaladuj dane z tabeli";
             this.button1.UseVisualStyleBackColor = true;

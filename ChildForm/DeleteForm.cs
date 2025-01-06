@@ -20,6 +20,7 @@ namespace Liga.ChildForm
         private List<Player> players;
         private List<Stadium> stadiums;
         private List<Sponsor> sponsors;
+        private List<Contract> contracts;
 
         public DeleteForm(DataAccess data)
         {
@@ -77,6 +78,14 @@ namespace Liga.ChildForm
                     }
                     break;
 
+                case "Kontrakty":
+                    dataAccess.SelectContracts();
+                    contracts = dataAccess.GetContracts;
+                    foreach( Contract contract in contracts)
+                    {
+                        dataList.Items.Add($"{contract.Id}. {contract.ExpiryDate}");
+                    }
+                    break;
                 default:
                     break;
             }
@@ -103,6 +112,18 @@ namespace Liga.ChildForm
                     if (confirmResult == DialogResult.Yes)
                     {
                         dataEditor.deleteStadium(stadDelete.ArenaName);
+                    }
+                    break;
+
+                case "Kontrakty":
+                    string[] parts = dataList.Text.Split('.');
+                    int sel = int.Parse(parts[0]);
+                    Contract conDelete = contracts.FirstOrDefault(c => c.Id == sel);
+                    confirmResult = MessageBox.Show($"Czy na pewno chcesz usunac {conDelete.Id}, {conDelete.SalaryMLN}, {conDelete.ExpiryDate}, z tabeli {current}"
+                        , "Usuwanie rekordu", MessageBoxButtons.YesNo);
+                    if (confirmResult == DialogResult.Yes)
+                    {
+                        dataEditor.deleteContract(parts[0]);
                     }
                     break;
 

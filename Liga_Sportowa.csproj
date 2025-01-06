@@ -92,6 +92,7 @@
     <Compile Include="Sponsor.cs" />
     <Compile Include="Stadium.cs" />
     <Compile Include="Team.cs" />
+    <Compile Include="TeamPlayer.cs" />
     <EmbeddedResource Include="ChildForm\Addform.resx">
       <DependentUpon>Addform.cs</DependentUpon>
     </EmbeddedResource>

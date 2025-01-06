@@ -18,7 +18,6 @@ namespace Liga.ChildForm
         private DataEditor editor;
         private List<String> names;
         
-
         public EditorForm(DataAccess data)
         {
             
@@ -51,7 +50,6 @@ namespace Liga.ChildForm
                     {
                         TableList.Items.Add(t.TeamName);
                     }
-                    currentTable = choice;
                     break;
 
                 case "Stadiony":
@@ -61,7 +59,6 @@ namespace Liga.ChildForm
                     {
                         TableList.Items.Add(s.ArenaName);
                     }
-                    currentTable= choice;
                     break;
 
                 case "Pracownicy":
@@ -71,7 +68,6 @@ namespace Liga.ChildForm
                     {
                         TableList.Items.Add($"{e.EmployeeID},{e.LastName}");
                     }
-                    currentTable = choice;
                     break;
 
                 case "Sponsorzy":
@@ -81,14 +77,30 @@ namespace Liga.ChildForm
                     {
                         TableList.Items.Add($"{s.SponsorID}, {s.SponsorName}");
                     }
-                    currentTable = choice;
+                    break;
+
+                case "Kontrakty":
+                    dataAccess.SelectContracts();
+                    List<Contract> contracts = dataAccess.GetContracts;
+                    foreach(Contract contract in contracts)
+                    {
+                        TableList.Items.Add($"{contract.Id}, {contract.SalaryMLN}");
+                    }
+                    break;
+
+                case "Zawodnicy":
+                    dataAccess.SelectPlayers();
+                    List<Player> players = dataAccess.GetPlayers;
+                    foreach(Player p in players)
+                    {
+                        TableList.Items.Add($"{p.PlayerID}, {p.FirstName}, {p.LastName}");
+                    }
                     break;
 
 
                 default: break;
             }
-
-
+            currentTable = choice;
         }
 
         public void LoadBtn_Click(Object sender, EventArgs e)
@@ -100,6 +112,7 @@ namespace Liga.ChildForm
         {
             clearTextBoxes();
             string selected;
+            string[] parts;
             switch (choice)
             {
                 case "Druzyny":
@@ -113,7 +126,6 @@ namespace Liga.ChildForm
                     names.Add("BilansMLN");
                     names.Add("SponsorID");
                     names.Add("Conference");
-                    updateLabels(names);
                     dataAccess.SelectTeams();
                     List<Team> teams = dataAccess.GetTeams;
                     selected = TableList.SelectedItem.ToString();
@@ -124,7 +136,6 @@ namespace Liga.ChildForm
                     textBox4.Text = team.BilansMLN.ToString();
                     textBox5.Text = team.SponsorID.ToString();
                     textBox6.Text = team.Conference;
-
                     break;
 
                 case "Stadiony":
@@ -136,7 +147,6 @@ namespace Liga.ChildForm
                     names.Add("Capacity");
                     names.Add("TeamID");
                     names.Add("SponsorID");
-                    updateLabels (names);
                     dataAccess.SelectStadiums();
                     List<Stadium> stadiums = dataAccess.GetStadiums;
                     selected = TableList.SelectedItem.ToString();
@@ -162,12 +172,11 @@ namespace Liga.ChildForm
                     names.Add("Salary");
                     names.Add("TeamID");
                     names.Add("ExpiryDate");
-                    updateLabels(names);
                     dataAccess.SelectEmployees();
                     List<Employee> employees = dataAccess.GetEmployees;
                     selected = TableList.SelectedItem.ToString();
-                    string[] part = selected.Split(',');
-                    int id = int.Parse(part[0]);
+                    parts = selected.Split(',');
+                    int id = int.Parse(parts[0]);
                     Employee emp = employees.FirstOrDefault(e => e.EmployeeID == id);
                     textBox1.Text = emp.EmployeeID.ToString();
                     textBox2.Text = emp.FirstName;
@@ -190,7 +199,7 @@ namespace Liga.ChildForm
                     dataAccess.SelectSponsors();
                     List<Sponsor> sponsors = dataAccess.GetSponsors;
                     selected = TableList.SelectedItem.ToString();
-                    string[] parts = selected.Split(',');
+                    parts = selected.Split(',');
                     int spID = int.Parse(parts[0]);
                     Sponsor sp = sponsors.FirstOrDefault(s => s.SponsorID == spID);
                     textBox1.Text += sp.SponsorID.ToString();
@@ -198,9 +207,56 @@ namespace Liga.ChildForm
                     textBox3.Text += sp.SponsorType;
                     break;
 
+                case "Kontrakty":
+                    if (names != null)
+                    {
+                        names.Clear();
+                    }
+                    names.Add("ID");
+                    names.Add("PlayerID");
+                    names.Add("ExpiryDate");
+                    names.Add("Salary(MLN)");
+                    dataAccess.SelectContracts();
+                    List<Contract> contracts = dataAccess.GetContracts;
+                    selected = TableList.SelectedItem.ToString();
+                    parts = selected.Split(',');
+                    int cID = int.Parse(parts[0]);
+                    Contract contract = contracts.FirstOrDefault(c => c.Id == cID);
+                    textBox1.Text += contract.Id;
+                    textBox2.Text += contract.PlayerID;
+                    textBox3.Text += contract.ExpiryDate.ToString();
+                    textBox4.Text += contract.SalaryMLN;
+                    break;
+
+                case "Zawodnicy":
+                    if (names != null)
+                    {
+                        names.Clear();
+                    }
+                    names.Add("PlayerID");
+                    names.Add("LastName");
+                    names.Add("FirstName");
+                    names.Add("DateOfBirth");
+                    names.Add("TeamID");
+                    names.Add("CountryCode");
+                    names.Add("SponsorID");
+                    dataAccess.SelectPlayers();
+                    List<Player> players = dataAccess.GetPlayers;
+                    selected = TableList.SelectedItem.ToString();
+                    parts = selected.Split(',');
+                    int plID = int.Parse(parts[0]);
+                    Player player = players.FirstOrDefault(p => p.PlayerID == plID);
+                    textBox1.Text += player.PlayerID;
+                    textBox2.Text += player.LastName;
+                    textBox3.Text += player.FirstName;
+                    textBox4.Text += player.DateOfBirth;
+                    textBox5.Text += player.TeamID;
+                    textBox6.Text += player.CountryCode;
+                    textBox7.Text += player.SponsorID;
+                    break;
                 default: break;
-    
             }
+            updateLabels(names);
         }
         
         public void clearTextBoxes()
@@ -217,22 +273,34 @@ namespace Liga.ChildForm
 
         public void editBtn_Click(object sender, EventArgs e)
         {
+
             DataEditor dataEditor = new DataEditor();
-            switch (currentTable)
+            try
             {
-                case "Drużyny":
-                    dataEditor.editTeam(textBox1.Text, textBox2.Text, textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text);
-                    break;
+                switch (currentTable)
+                {
+                    case "Druzyny":
+                        dataEditor.editTeam(textBox1.Text, textBox2.Text, textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text);
+                        break;
 
-                case "Stadiony":
-                    dataEditor.editStadium(textBox1.Text, textBox2.Text, textBox3.Text, textBox4.Text);
-                    break;
+                    case "Stadiony":
+                        dataEditor.editStadium(textBox1.Text, textBox2.Text, textBox3.Text, textBox4.Text);
+                        break;
 
-                case "Sponsorzy":
-                    dataEditor.EditSponsor(textBox1.Text, textBox2.Text, textBox3.Text);
-                    break;
+                    case "Sponsorzy":
+                        dataEditor.EditSponsor(textBox1.Text, textBox2.Text, textBox3.Text);
+                        break;
+
+                    case "Kontrakty":
+                        dataEditor.EditContract(textBox1.Text, textBox2.Text, textBox3.Text, textBox4.Text);
+                        break;
+                }
+                clearTextBoxes();
             }
-            clearTextBoxes();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         public void updateLabels(List<String> names)
@@ -248,5 +316,7 @@ namespace Liga.ChildForm
                 label.Text = names[i];
             }
         }
+
+
     }
 }

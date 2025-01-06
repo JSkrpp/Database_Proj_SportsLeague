@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ligga;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -22,7 +23,9 @@ namespace Liga.ChildForm
         private List<Sponsor> sponsors;
         private List<Employee> employees;
         private List<Contract> contracts;
+        private List<TeamPlayer> teamPlayers;
         private string current;
+        private bool rising;
         public ViewForm(DataAccess dataAccess)
         {
             InitializeComponent();
@@ -33,6 +36,8 @@ namespace Liga.ChildForm
             this.employees = dataAccess.GetEmployees;
             this.contracts = dataAccess.GetContracts;
             this.current = "";
+            this.rising = true;
+            LoadTeamBox();
         }
 
 
@@ -92,49 +97,120 @@ namespace Liga.ChildForm
                     }
                     break;
 
+                case "Kontrakty":
+                    dataAccess.SelectContracts();
+                    contracts = dataAccess.GetContracts;
+                    foreach (Contract contract in contracts)
+                    {
+                        dataList.Items.Add($"{contract.Id}. {contract.SalaryMLN}");
+                    }
+                    break;
+
                 default:
                     break;
             }
         }
 
 
-        //TODO
+       
         private void btn2_click(object sender, EventArgs e)
         {
             string[] part = dataList.Text.Split('.');
-            switch (current)
+            try
             {
-                case "Drużyny":
-                    Team team = teams.FirstOrDefault(t => t.TeamID.ToString() == part[0]);
-                    MessageBox.Show($"ID: {team.TeamID}, City: {team.TeamCity} , Name: {team.TeamName} , Balance: {team.BilansMLN} MLN");
-                    break;
+                switch (current)
+                {
+                    case "Drużyny":
+                        Team team = teams.FirstOrDefault(t => t.TeamID.ToString() == part[0]);
+                        MessageBox.Show($"ID: {team.TeamID}, City: {team.TeamCity} , Name: {team.TeamName} , Balance: {team.BilansMLN} MLN");
+                        break;
 
-                case "Zawodnicy":
-                    Player player = players.FirstOrDefault(p => p.PlayerID.ToString() == part[0]);
-                    MessageBox.Show($"ID: {player.PlayerID}, {player.FirstName}, {player.LastName}, {player.DateOfBirth}, SponsorID: {player.SponsorID}, {player.CountryCode}");
-                    break;
+                    case "Zawodnicy":
+                        Player player = players.FirstOrDefault(p => p.PlayerID.ToString() == part[0]);
+                        MessageBox.Show($"ID: {player.PlayerID}, {player.FirstName}, {player.LastName}, {player.DateOfBirth}, SponsorID: {player.SponsorID}, {player.CountryCode}");
+                        break;
 
-                case "Sponsorzy":
-                    Sponsor spon = sponsors.FirstOrDefault(s => s.SponsorName == dataList.Text);
-                    MessageBox.Show($"SponorID: {spon.SponsorID}; Name: {spon.SponsorName}, Type: {spon.SponsorType}");
-                    break;
+                    case "Sponsorzy":
+                        Sponsor spon = sponsors.FirstOrDefault(s => s.SponsorName == dataList.Text);
+                        MessageBox.Show($"SponorID: {spon.SponsorID}; Name: {spon.SponsorName}, Type: {spon.SponsorType}");
+                        break;
 
-                case "Stadiony":
-                    Stadium stadium = stadiums.FirstOrDefault(st => st.ArenaName == part[0]);
-                    MessageBox.Show($"{stadium.ArenaName}, {stadium.Capacity}, TeamID: {stadium.TeamID}, SponsorID: {stadium.SponsorID}");
-                    break;
+                    case "Stadiony":
+                        Stadium stadium = stadiums.FirstOrDefault(st => st.ArenaName == part[0]);
+                        MessageBox.Show($"{stadium.ArenaName}, {stadium.Capacity}, TeamID: {stadium.TeamID}, SponsorID: {stadium.SponsorID}");
+                        break;
 
-                case "Pracownicy":
-                    Employee employee = employees.FirstOrDefault(em => em.EmployeeID.ToString() == part[0]);
-                    MessageBox.Show($"{employee.EmployeeID}, {employee.FirstName}, {employee.LastName}, {employee.Position} , Salary: {employee.Salary}, Contract Expiration: {employee.ExpiryDate}");
-                    break;
+                    case "Pracownicy":
+                        Employee employee = employees.FirstOrDefault(em => em.EmployeeID.ToString() == part[0]);
+                        MessageBox.Show($"{employee.EmployeeID}, {employee.FirstName}, {employee.LastName}, {employee.Position} , Salary: {employee.Salary}, Contract Expiration: {employee.ExpiryDate}");
+                        break;
 
-                case "Kontrakty":
-                    Contract contract = contracts.FirstOrDefault(cn => cn.Id.ToString() == part[0]);
-                    MessageBox.Show($"{contract.Id}, PlayerID: {contract.PlayerID}, Expiration {contract.ExpiryDate}, Salary: {contract.SalaryMLN}");
-                    break;
-                default : break;
+                    case "Kontrakty":
+                        Contract contract = contracts.FirstOrDefault(cn => cn.Id.ToString() == part[0]);
+                        MessageBox.Show($"{contract.Id}, PlayerID: {contract.PlayerID}, Expiration {contract.ExpiryDate}, Salary: {contract.SalaryMLN}");
+                        break;
+                    default: break;
+                }
+            }catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (rising)
+            {
+                button3.Text = "Posortuj rosnaco";
+            }
+            else
+            {
+                button3.Text = "Posortuj malejaco";   
+            }
+            dataAccess.SelectView(TeamBox.Text, rising);
+            teamPlayers = dataAccess.GetView;
+            if (listBox1 != null)
+            {
+                listBox1.Items.Clear();
+            }
+            foreach (var player in teamPlayers)
+            {
+                listBox1.Items.Add($"{player.LastName}, {player.FirstName}, {player.Country}, {player.TeamCity}, {player.TeamName}");
+            }
+            rising = !rising;
+        }
+
+        private void LoadTeamBox()
+        {
+            dataAccess.SelectTeams();
+            teams = dataAccess.GetTeams;
+            foreach (Team team in teams)
+            {
+                TeamBox.Items.Add(team.TeamName);
+            }
+        }
+
+        private void btn4_click(object sender, EventArgs e)
+        {
+            try
+            {
+                dataAccess.SelectView(TeamBox.Text, rising);
+                teamPlayers = dataAccess.GetView;
+                if (listBox1 != null)
+                {
+                    listBox1.Items.Clear();
+                }
+                foreach (var player in teamPlayers)
+                {
+                    listBox1.Items.Add($"{player.LastName}, {player.FirstName}, {player.Country}, {player.TeamCity}, {player.TeamName}");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            rising = !rising;
+        }
+
     }
 }
