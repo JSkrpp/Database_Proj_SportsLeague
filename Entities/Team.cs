@@ -14,7 +14,5 @@ namespace Liga
         public float BilansMLN { get; set; }
         public int SponsorID { get; set; }
         public string Conference { get; set; }
-
-        public static int amount = 6;
     }
 }

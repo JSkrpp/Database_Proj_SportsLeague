@@ -62,7 +62,6 @@ namespace Liga.ChildForm
                 switch (current)
                 {
                     case "Zawodnicy":
-                        names.Add("PlayerID");
                         names.Add("LastName");
                         names.Add("FirstName");
                         names.Add("DateOfBirth");
@@ -100,10 +99,12 @@ namespace Liga.ChildForm
                         break;
 
                     case "Pracownicy":
-                        names.Add("ID");
-                        names.Add("PlayerID");
+                        names.Add("FirstNane");
+                        names.Add("LastName");
+                        names.Add("Position");
+                        names.Add("Salary");
+                        names.Add("TeamID");
                         names.Add("ExpiryDate");
-                        names.Add("Salary(MLN)");
                         break;
                     
 
@@ -133,6 +134,14 @@ namespace Liga.ChildForm
 
                     case "Kontrakty":
                         dataEditor.AddContract(textBox1.Text, textBox2.Text, textBox3.Text, textBox4.Text);
+                        break;
+
+                    case "Zawodnicy":
+                        dataEditor.AddPlayer(textBox1.Text, textBox2.Text, textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text);
+                        break;
+
+                    case "Pracownicy":
+                        dataEditor.AddEmployee(textBox1.Text, textBox2.Text, textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text);
                         break;
 
                     default: break;

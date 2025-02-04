@@ -127,6 +127,19 @@ namespace Liga.ChildForm
                     }
                     break;
 
+                case "Zawodnicy":
+                    parts = dataList.Text.Split('.');
+                    sel = int.Parse(parts[0]);
+                    Player plDelete = players.FirstOrDefault(p => p.PlayerID == sel);
+                    confirmResult = MessageBox.Show($"Czy na pewno chcesz usunac {plDelete.PlayerID}, {plDelete.LastName}, {plDelete.FirstName}, z tabeli {current}"
+                        , "Usuwanie rekordu", MessageBoxButtons.YesNo);
+                   
+                    if (confirmResult == DialogResult.Yes)
+                    {
+                        dataEditor.deleteContract(parts[0]);
+                    }
+                    break;
+
                 default: break;
             }
         }

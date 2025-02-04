@@ -127,7 +127,7 @@ namespace Liga.ChildForm
 
                     case "Zawodnicy":
                         Player player = players.FirstOrDefault(p => p.PlayerID.ToString() == part[0]);
-                        MessageBox.Show($"ID: {player.PlayerID}, {player.FirstName}, {player.LastName}, {player.DateOfBirth}, SponsorID: {player.SponsorID}, {player.CountryCode}");
+                        MessageBox.Show($"ID: {player.PlayerID}, {player.FirstName}, {player.LastName}, {player.DateOfBirth}, TeamID: {player.TeamID}, SponsorID: {player.SponsorID}, {player.CountryCode}");
                         break;
 
                     case "Sponsorzy":
@@ -159,6 +159,7 @@ namespace Liga.ChildForm
 
         private void button3_Click(object sender, EventArgs e)
         {
+
             if (rising)
             {
                 button3.Text = "Posortuj rosnaco";
@@ -167,6 +168,7 @@ namespace Liga.ChildForm
             {
                 button3.Text = "Posortuj malejaco";   
             }
+            rising = !rising;
             dataAccess.SelectView(TeamBox.Text, rising);
             teamPlayers = dataAccess.GetView;
             if (listBox1 != null)
@@ -177,7 +179,6 @@ namespace Liga.ChildForm
             {
                 listBox1.Items.Add($"{player.LastName}, {player.FirstName}, {player.Country}, {player.TeamCity}, {player.TeamName}");
             }
-            rising = !rising;
         }
 
         private void LoadTeamBox()
@@ -209,7 +210,6 @@ namespace Liga.ChildForm
             {
                 MessageBox.Show(ex.Message);
             }
-            rising = !rising;
         }
 
     }

@@ -13,7 +13,6 @@ namespace Liga.ChildForm
     public partial class EditorForm : Form
     {
         private string currentTable;
-        private int textCount = 0;
         private DataAccess dataAccess;
         private DataEditor editor;
         private List<String> names;
@@ -103,10 +102,7 @@ namespace Liga.ChildForm
             currentTable = choice;
         }
 
-        public void LoadBtn_Click(Object sender, EventArgs e)
-        {
-            textBoxLoad(currentTable);
-        }
+        public void LoadBtn_Click(Object sender, EventArgs e) => textBoxLoad(currentTable);
 
         public void textBoxLoad(string choice)
         {
@@ -133,7 +129,7 @@ namespace Liga.ChildForm
                     textBox1.Text = team.TeamID.ToString();
                     textBox2.Text = team.TeamName;
                     textBox3.Text = team.TeamCity;
-                    textBox4.Text = team.BilansMLN.ToString();
+                    textBox4.Text = team.BilansMLN.ToString(System.Globalization.CultureInfo.InvariantCulture);
                     textBox5.Text = team.SponsorID.ToString();
                     textBox6.Text = team.Conference;
                     break;
@@ -225,7 +221,7 @@ namespace Liga.ChildForm
                     textBox1.Text += contract.Id;
                     textBox2.Text += contract.PlayerID;
                     textBox3.Text += contract.ExpiryDate.ToString();
-                    textBox4.Text += contract.SalaryMLN;
+                    textBox4.Text += contract.SalaryMLN.ToString(System.Globalization.CultureInfo.InvariantCulture);
                     break;
 
                 case "Zawodnicy":
@@ -293,6 +289,14 @@ namespace Liga.ChildForm
 
                     case "Kontrakty":
                         dataEditor.EditContract(textBox1.Text, textBox2.Text, textBox3.Text, textBox4.Text);
+                        break;
+
+                    case "Zawodnicy":
+                        dataEditor.EditPlayer(textBox1.Text, textBox2.Text, textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox7.Text);
+                        break;
+
+                    case "Pracownicy":
+                        dataEditor.EditEmployee(textBox1.Text, textBox2.Text, textBox3.Text, textBox4.Text, textBox5.Text, textBox6.Text, textBox7.Text);
                         break;
                 }
                 clearTextBoxes();

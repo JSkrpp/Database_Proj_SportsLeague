@@ -97,6 +97,7 @@
             this.LogBtn.Size = new System.Drawing.Size(240, 100);
             this.LogBtn.TabIndex = 8;
             this.LogBtn.Text = "Login";
+            this.LogBtn.Click += new System.EventHandler(this.logBtn_Click);
             this.LogBtn.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.LogBtn.UseVisualStyleBackColor = false;
             // 

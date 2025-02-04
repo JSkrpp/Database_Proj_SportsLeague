@@ -281,5 +281,7 @@ namespace Liga
         public List<Contract> GetContracts { get { return contracts; } }
 
         public List<TeamPlayer> GetView { get { return teamPlayers; } }
+
+        public int AddPlus2(int a, int b) => a + b + 2;
     }
 }

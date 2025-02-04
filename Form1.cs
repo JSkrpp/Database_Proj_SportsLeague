@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Liga.ChildForm;
+using Ligga;
 
 namespace Liga
 {
@@ -20,6 +21,7 @@ namespace Liga
         private List<Team> teams = new List<Team>();
         private List<Stadium> stadiums = new List<Stadium>();
         private Form currentForm;
+        private Session session;
 
         public Form1()
         {
@@ -27,10 +29,7 @@ namespace Liga
             openChildForm(new ChildForm.HomeForm());
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
+        private void Form1_Load(object sender, EventArgs e) => session = new Session();
 
         private void widokBtn_Click(object sender, EventArgs e)
         {
@@ -42,10 +41,18 @@ namespace Liga
 
         private void deletionBtn_Click(Object sender, EventArgs e)
         {
-            Color color = Color.FromArgb(120, 10, 10);
-            update_frame(color, "Usuwanie");
-            DeletionBtn.BackColor = color;
-            openChildForm(new ChildForm.DeleteForm(dataAccess));
+            if (session.getStatus())
+            {
+                Color color = Color.FromArgb(120, 10, 10);
+                update_frame(color, "Usuwanie");
+                DeletionBtn.BackColor = color;
+                openChildForm(new ChildForm.DeleteForm(dataAccess));
+            }
+            else
+            {
+                MessageBox.Show("Nie jestes zalogowany do systemu!", "Brak dostepu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logBtn_Click(sender, e);
+            }
         }
 
         private void homeBtn_Click(object sender, EventArgs e)
@@ -54,25 +61,48 @@ namespace Liga
             update_frame(color, "Ekran Startowy");
             HomeBtn.BackColor = color;
             openChildForm(new ChildForm.HomeForm());
-
         }
 
         private void editBtn_Click( object sender, EventArgs e)
         {
-            Color color = Color.FromArgb(20, 40, 90);
-            update_frame(color, "Edycja");
-            EditorBtn.BackColor = color;
-            openChildForm(new ChildForm.EditorForm(dataAccess));
+            if (session.getStatus())
+            {
+                Color color = Color.FromArgb(20, 40, 90);
+                update_frame(color, "Edycja");
+                EditorBtn.BackColor = color;
+                openChildForm(new ChildForm.EditorForm(dataAccess));
+            }
+            else
+            {
+                MessageBox.Show("Nie jestes zalogowany do systemu!", "Brak dostepu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logBtn_Click(sender, e);
+            }
         }
 
         private void addBtn_Click( Object sender, EventArgs e )
         {
-            Color color = Color.FromArgb(200, 200, 200);
-            update_frame(color, "Dodawanie");
-            AddBtn.BackColor = color;
-            openChildForm(new ChildForm.Addform());
-
+            if (session.getStatus())
+            {
+                Color color = Color.FromArgb(200, 200, 200);
+                update_frame(color, "Dodawanie");
+                AddBtn.BackColor = color;
+                openChildForm(new ChildForm.Addform());
+            }
+            else
+            {
+                MessageBox.Show("Nie jestes zalogowany do systemu!", "Brak dostepu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logBtn_Click(sender, e);
+            }
         }
+
+        private void logBtn_Click(Object sender, EventArgs e)
+        {
+            Color color = Color.FromArgb(10, 150, 10);
+            update_frame(color, "Logowanie");
+            LogBtn.BackColor = color;
+            openChildForm(new ChildForm.LoginForm(session));
+        }
+
 
         private void openChildForm (Form childForm)
         {
